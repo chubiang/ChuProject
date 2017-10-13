@@ -1,50 +1,97 @@
+//버전 관리
+def version = [
+		spring: '4.3.4.RELEASE',
+		servletAPI: '3.1.0',
+		commonsCollections: '3.2.1',
+		junit: '4.12',
+		slf4j: '1.7.12'
+]
+
 buildscript {
-	ext {
-		kotlinVersion = '1.1.51'
-		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
-	}
+	ext.springVersion = '4.3.4.RELEASE'
+	ext.kotlin_version = '1.1.2-4'
+	ext.extraConfVersion = '2.2.+'
+
 	repositories {
 		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
+		jcenter()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
+		classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$extraConfVersion"
+	}
+
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8' // 인코딩 UTF-8로 통일합니다.
+
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'kotlin'
+apply plugin: 'provided-base'
+
+apply plugin: 'eclipse-wtp' // 이클립스에서 구동하고 배포하기위해 플러그인 설치합니다.
+// Bindings between kotlin and spring
+apply plugin: 'kotlin-spring'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+eclipse {
+	// 빌드하고나면 프로젝트정보도 같이 지워지는데, Gradle프로젝트임을 인식시켜줍니다.
+	project.natures "org.springsource.ide.eclipse.gradle.core.nature"
+	wtp {
+		facet {
+			facet name: 'jst.web', version: '3.1'
+			facet name: 'jst.java', version: '1.8'
+		}
 	}
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
-group = 'com.kotlin.chubiang'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-compileKotlin {
-	kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-	kotlinOptions.jvmTarget = "1.8"
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Gradle Quickstart',
+				'Implementation-Version': version
+	}
 }
 
 repositories {
 	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
+}
+dependencies {
+
+	//Junit
+	testCompile group: 'junit', name: 'junit', version: "${version.junit}"
+
+	// Kotlin Dependencies
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+	// Spring Dependencies
+	providedCompile "javax.servlet:javax.servlet-api:${version.servletAPI}"
+	compile "org.slf4j:slf4j-api:${version.slf4j}"
+	compile "org.springframework:spring-webmvc:${version.spring}"
+	compile 'org.springframework:spring-context-support:5.0.0.RELEASE'
+	compile group: 'commons-collections', name: 'commons-collections', version: "${version.commonsCollections}"
+
+	// Jackson Dependencies
+	compile "com.fasterxml.jackson.core:jackson-annotations"
+	compile "com.fasterxml.jackson.core:jackson-core"
+	compile "com.fasterxml.jackson.core:jackson-databind"
+	runtime "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
+	runtime "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+	runtime "com.fasterxml.jackson.module:jackson-module-kotlin"
+
+	// https://mvnrepository.com/artifact/org.freemarker/freemarker
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.14'
+
+
 }
 
+compileJava.dependsOn(processResources)
 
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-jersey')
-	compile('org.springframework.boot:spring-boot-starter-mustache')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-	runtime('org.postgresql:postgresql')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+task wrapper(type: Wrapper) {
+	gradleVersion = "3.5"
 }
