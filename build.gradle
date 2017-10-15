@@ -1,6 +1,6 @@
 //버전 관리
 def version = [
-		spring: '4.3.4.RELEASE',
+		spring: '4.3.10.RELEASE',
 		servletAPI: '3.1.0',
 		commonsCollections: '3.2.1',
 		junit: '4.12',
@@ -8,7 +8,7 @@ def version = [
 ]
 
 buildscript {
-	ext.springVersion = '4.3.4.RELEASE'
+	ext.springVersion = '4.3.10.RELEASE'
 	ext.kotlin_version = '1.1.2-4'
 	ext.extraConfVersion = '2.2.+'
 
@@ -21,8 +21,6 @@ buildscript {
 		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 		classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$extraConfVersion"
 	}
-
-	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8' // 인코딩 UTF-8로 통일합니다.
 
 }
 
@@ -76,18 +74,11 @@ dependencies {
 	compile 'org.springframework:spring-context-support:5.0.0.RELEASE'
 	compile group: 'commons-collections', name: 'commons-collections', version: "${version.commonsCollections}"
 
-	// Jackson Dependencies
-	compile "com.fasterxml.jackson.core:jackson-annotations"
-	compile "com.fasterxml.jackson.core:jackson-core"
-	compile "com.fasterxml.jackson.core:jackson-databind"
-	runtime "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
-	runtime "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
-	runtime "com.fasterxml.jackson.module:jackson-module-kotlin"
-
 	// https://mvnrepository.com/artifact/org.freemarker/freemarker
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.14'
 
-
+	// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
+	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.20'
 }
 
 compileJava.dependsOn(processResources)
