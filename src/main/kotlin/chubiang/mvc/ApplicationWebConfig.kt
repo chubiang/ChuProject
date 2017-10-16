@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver
 
 @EnableWebMvc
 @Configuration
-@ComponentScan( "chubiang"  )
+@ComponentScan( basePackages =  arrayOf("chubiang") )
 class ApplicationWebConfig : WebMvcConfigurerAdapter(), ApplicationContextAware {
 
     private var applicationContext: ApplicationContext? = null
@@ -39,7 +39,7 @@ class ApplicationWebConfig : WebMvcConfigurerAdapter(), ApplicationContextAware 
     }
 
     fun resolver(): InternalResourceViewResolver {
-        var resolver: InternalResourceViewResolver = InternalResourceViewResolver()
+        var resolver = InternalResourceViewResolver()
         resolver.setViewClass(JstlView::class.java)
         resolver.setPrefix("/WEB-INF/views/")
         resolver.setSuffix(".jsp")
@@ -48,15 +48,15 @@ class ApplicationWebConfig : WebMvcConfigurerAdapter(), ApplicationContextAware 
 
     @Bean
     fun freemarkerViewResolver(): FreeMarkerViewResolver {
-        var resolver: FreeMarkerViewResolver = FreeMarkerViewResolver()
-        resolver.setPrefix("")
+        var resolver = FreeMarkerViewResolver()
+        resolver.setPrefix("/WEB-INF/views/ftl")
         resolver.setSuffix(".ftl")
         return resolver
     }
 
     @Bean
     fun freemarkerConfig(): FreeMarkerConfigurer {
-        var freeMarkerConfigurer: FreeMarkerConfigurer = FreeMarkerConfigurer()
+        var freeMarkerConfigurer = FreeMarkerConfigurer()
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/view/ftl/")
         return freeMarkerConfigurer
     }
