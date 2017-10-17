@@ -4,13 +4,24 @@ def version = [
 		servletAPI: '3.1.0',
 		commonsCollections: '3.2.1',
 		junit: '4.12',
-		slf4j: '1.7.12'
+		slf4j: '1.7.5'
+]
+
+List loggers = [
+		"org.slf4j:slf4j-api:${slf4jVersion}",
+		"org.slf4j:jcl-over-slf4j:${slf4jVersion}",
+		"org.slf4j:log4j-over-slf4j:${slf4jVersion}",
+		"org.slf4j:jul-to-slf4j:${slf4jVersion}",
+		"ch.qos.logback:logback-core:${logbackVersion}",
+		"ch.qos.logback:logback-classic:${logbackVersion}"
 ]
 
 buildscript {
 	ext.springVersion = '4.3.10.RELEASE'
 	ext.kotlin_version = '1.1.2-4'
 	ext.extraConfVersion = '2.2.+'
+	ext.slf4jVersion = '1.7.5'
+	ext.logbackVersion = '1.0.13'
 
 	repositories {
 		mavenCentral()
@@ -24,6 +35,9 @@ buildscript {
 
 }
 
+group "chubiang"
+
+apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'kotlin'
@@ -69,19 +83,30 @@ dependencies {
 
 	// Spring Dependencies
 	providedCompile "javax.servlet:javax.servlet-api:${version.servletAPI}"
-	compile "org.slf4j:slf4j-api:${version.slf4j}"
 	compile "org.springframework:spring-webmvc:${version.spring}"
 	compile 'org.springframework:spring-context-support:5.0.0.RELEASE'
 	compile group: 'commons-collections', name: 'commons-collections', version: "${version.commonsCollections}"
-
+	compile("javax.servlet:jstl:1.2")
+	compile("javax.servlet.jsp:jsp-api:2.2")
+	//Log Dependencies
+	compile loggers
+	//JPA
+	compile "org.springframework.data:spring-data-jpa:1.5.0.RELEASE"
 	// https://mvnrepository.com/artifact/org.freemarker/freemarker
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.14'
-
 	// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
 	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.20'
 }
 
-compileJava.dependsOn(processResources)
+configurations {
+	all.collect { configuration ->
+		configuration.exclude group: 'commons-logging', module: 'commons-logging'
+		configuration.exclude group: 'log4j', module: 'log4j'
+		configuration.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+		configuration.exclude group: 'org.slf4j', module: 'slf4j-jcl'
+		configuration.exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+	}
+}
 
 task wrapper(type: Wrapper) {
 	gradleVersion = "3.5"
