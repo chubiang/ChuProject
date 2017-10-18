@@ -93,9 +93,17 @@ dependencies {
 	//JPA
 	compile "org.springframework.data:spring-data-jpa:1.5.0.RELEASE"
 	// https://mvnrepository.com/artifact/org.freemarker/freemarker
-	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.14'
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.25-incubating'
 	// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
 	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.20'
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.9'
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.9'
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.0'
+
+
 }
 
 configurations {

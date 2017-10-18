@@ -11,10 +11,22 @@ class AppController {
 
     private val logger = LoggerFactory.getLogger(AppController::class.java)
 
+    //jsp 페이지
     @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
     fun index(): ModelAndView {
         logger.debug("인터셉터 테스트")
         return ModelAndView("index")
+    }
+    //freemarker 페이지
+    @RequestMapping(value = "/fm", method = arrayOf(RequestMethod.GET))
+    fun fmIndex(): ModelAndView {
+        return ModelAndView("fmIndex")
+    }
+    @RequestMapping(value = "/url", method = arrayOf(RequestMethod.GET))
+    fun connectorURL(): ModelAndView {
+        val mv = ModelAndView()
+        mv.viewName = "connectorMain"
+        return mv
     }
 
 }
