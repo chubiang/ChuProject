@@ -22,10 +22,15 @@ class AppController {
     fun fmIndex(): ModelAndView {
         return ModelAndView("fmIndex")
     }
-    @RequestMapping(value = "/url", method = arrayOf(RequestMethod.GET))
-    fun connectorURL(): ModelAndView {
+    @RequestMapping(value = "/home", method = arrayOf(RequestMethod.GET))
+    fun home(): ModelAndView {
         val mv = ModelAndView()
-        mv.viewName = "connectorMain"
+        mv.viewName = "petCityMain"
+        return mv
+    }
+    @RequestMapping(value = "login", method = arrayOf(RequestMethod.GET) )
+    fun login(): ModelAndView {
+        val mv = ModelAndView()
         return mv
     }
 
