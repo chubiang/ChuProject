@@ -2,6 +2,7 @@ package chubiang.controller
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
@@ -28,9 +29,13 @@ class AppController {
         mv.viewName = "petCityMain"
         return mv
     }
-    @RequestMapping(value = "login", method = arrayOf(RequestMethod.GET) )
-    fun login(): ModelAndView {
+    @RequestMapping(value = "login/{type}")
+    fun login(@PathVariable(required = false) type: String): ModelAndView {
         val mv = ModelAndView()
+        if(type.isNullOrEmpty()) {
+            mv.viewName = "login"
+        }
+
         return mv
     }
 

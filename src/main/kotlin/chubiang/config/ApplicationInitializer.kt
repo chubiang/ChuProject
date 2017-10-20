@@ -23,6 +23,6 @@ class ApplicationInitializer : AbstractAnnotationConfigDispatcherServletInitiali
     }
 
     override fun getRootConfigClasses(): Array<Class<*>>? {
-        return arrayOf(RepositoryConfig::class.java)
+        return arrayOf(RepositoryConfig::class.java, SecurityConfig::class.java)
     }
 }
