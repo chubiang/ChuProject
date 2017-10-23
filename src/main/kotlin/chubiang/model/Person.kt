@@ -1,6 +1,5 @@
 package chubiang.model
 
-import org.springframework.stereotype.Component
 import java.util.*
 
 /**-------------------------------------
@@ -17,7 +16,13 @@ import java.util.*
     makeDate / 유저생성날짜
     updateDate / 유저수정날짜
  */
-@Component
-data class Person(val personNo: String, val username: String, val personAge: Int, val email: String,
-                  val password: String, val personImg: String, val petNo: String, val etc: String,
-                  val makeDate: Date, val updateDate: Date)
+data class Person(private var personNo: String = "",
+                  private var username: String = "",
+                  private var personAge: Int = 0,
+                  private var email: String  = "",
+                  private var password: String  = "",
+                  private var personImg: String  = "",
+                  private var petNo: String  = "",
+                  private var etc: String?  = "",
+                  private var makeDate: Date? = null,
+                  private var updateDate: Date? = null)

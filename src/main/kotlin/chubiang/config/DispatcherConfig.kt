@@ -18,10 +18,10 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver
 class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     @Autowired
-    lateinit var loggerInterceptor:LoggerInterceptor
+    lateinit var appInterceptor: AppInterceptor
 
     override fun addInterceptors(registry: InterceptorRegistry?) {
-        registry!!.addInterceptor(loggerInterceptor)
+        registry!!.addInterceptor(appInterceptor)
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry?) {
@@ -52,6 +52,7 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
         resolver.setPrefix("")
         resolver.setSuffix(".ftl")
         resolver.setExposeSpringMacroHelpers(true)
+        resolver.setContentType("text/html;charset=UTF-8")
         resolver.order = 0
         return resolver
     }
@@ -60,6 +61,7 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
     fun freemarkerConfig(): FreeMarkerConfigurer {
         val freeMarkerConfigurer = FreeMarkerConfigurer()
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/views/ftl")
+        freeMarkerConfigurer.setDefaultEncoding("UTF-8")
         return freeMarkerConfigurer
     }
 

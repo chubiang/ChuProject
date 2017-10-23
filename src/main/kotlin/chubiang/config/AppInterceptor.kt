@@ -1,5 +1,6 @@
 package chubiang.config
 
+import freemarker.template.Configuration
 import org.apache.juli.logging.LogFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.ModelAndView
@@ -8,10 +9,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class LoggerInterceptor: HandlerInterceptorAdapter() {
-    protected  var log = LogFactory.getLog(LoggerInterceptor::class.java)
+class AppInterceptor : HandlerInterceptorAdapter() {
+    protected var log = LogFactory.getLog(AppInterceptor::class.java)
 
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?): Boolean {
+
         if (log.isDebugEnabled) {
             log.debug("======================================          START         ======================================")
             log.debug(" Request URI \t:  " + request!!.getRequestURI())
