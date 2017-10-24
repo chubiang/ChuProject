@@ -44,6 +44,12 @@ class AppController {
     fun fmIndex(): ModelAndView {
         return ModelAndView("fmIndex")
     }
+    //error 403
+    @RequestMapping(value = "/error403", method = arrayOf(RequestMethod.GET))
+    fun error403(): ModelAndView {
+        return ModelAndView("error403")
+    }
+
     @RequestMapping(value = "/home", method = arrayOf(RequestMethod.GET))
     fun home(): ModelAndView {
         val mv = ModelAndView()

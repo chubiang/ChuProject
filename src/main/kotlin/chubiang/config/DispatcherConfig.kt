@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
+import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
@@ -34,6 +35,12 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer?) {
         configurer!!.ignoreUnknownPathExtensions(false).defaultContentType(MediaType.TEXT_HTML)
+    }
+
+    // Spring security 사용자정의 AccessDeniedHandler handler Bean 등록
+    @Bean
+    fun accessDeniedHandler(): AccessDeniedHandler {
+        return CustomAccessDeniedHandler()
     }
 
     @Bean

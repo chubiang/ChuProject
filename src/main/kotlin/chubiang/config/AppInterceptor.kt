@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class AppInterceptor : HandlerInterceptorAdapter() {
-    protected var log = LogFactory.getLog(AppInterceptor::class.java)
+    private var log = LogFactory.getLog(AppInterceptor::class.java)
 
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?): Boolean {
 

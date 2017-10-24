@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import javax.sql.DataSource
@@ -15,28 +16,33 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
 //    @Autowired
 //    lateinit var dataSource: DataSource
 
+    // 글로벌 범위의 spring security 설정
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder){
 //        auth.jdbcAuthentication().dataSource()
         auth.inMemoryAuthentication()
-                .withUser("admin")
+                .withUser("admin@example.co.kr")
                 .password("1234")
                 .authorities("ROLE_ADMIN","ROLE_USER")
     }
 
+    // http 프로토콜 url이 들어올 때 적용시킬 spring security 설정
     @Throws(Exception::class)
-    fun configureHttp (http: HttpSecurity) {
+    override fun configure (http: HttpSecurity) {
         http.authorizeRequests()
+                .antMatchers("/resources/**").permitAll()
+                .anyRequest().authenticated()
                 .antMatchers("/home").access("hasRole('ROLE_USER')")
                 .antMatchers("/login*").anonymous().anyRequest().authenticated()
                     .and()
-                        .formLogin().loginPage("/login")
-                        .loginProcessingUrl("/login?perform")
-                        .defaultSuccessUrl("/home")
-                        .failureUrl("/login?fail")
+                .formLogin().loginPage("/login").permitAll()
+                .loginProcessingUrl("/login?perform")
+                .defaultSuccessUrl("/home")
+                .failureUrl("/login?fail")
                 .usernameParameter("email").passwordParameter("password")
                     .and()
-                        .logout().logoutSuccessUrl("/login?logout")
+                .logout().logoutSuccessUrl("/login?logout")
     }
+
 }
