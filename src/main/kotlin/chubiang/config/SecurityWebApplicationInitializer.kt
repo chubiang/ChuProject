@@ -2,4 +2,4 @@ package chubiang.config
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer
 
-class SecurityWebAppInitializer: AbstractSecurityWebApplicationInitializer(SecurityConfig::class.java)
+class SecurityWebApplicationInitializer: AbstractSecurityWebApplicationInitializer()

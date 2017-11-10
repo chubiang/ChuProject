@@ -9,6 +9,9 @@ import freemarker.template.TemplateException
 import freemarker.template.TemplateExceptionHandler
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,9 +22,8 @@ import java.io.IOException
 import java.io.OutputStreamWriter
 import java.io.Writer
 import java.util.HashMap
-
-
-
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 @Controller
@@ -66,13 +68,21 @@ class AppController {
         return mv
     }
 
-    @RequestMapping(value = "/login/{type}")
-    fun loginProcess(@PathVariable type: String, @ModelAttribute person: Person): ModelAndView {
-        val mv = ModelAndView()
-        var data_model: MutableMap<String, Any> = mutableMapOf()
-        var returnClass: ReturnClass = loginService.loginPage(type, person)
-        mv.addObject("returnClass", returnClass)
+    @RequestMapping(value = "/logout", method = arrayOf(RequestMethod.GET))
+    fun logout(request: HttpServletRequest, response: HttpServletResponse): String {
+        var auth: Authentication = SecurityContextHolder.getContext().authentication
+        if(auth != null) {
+            SecurityContextLogoutHandler().logout(request, response, auth)
+        }
+        return "redirect:/login"
+    }
 
+    @RequestMapping(value = "/login?perform")
+    fun loginProcess(@ModelAttribute person: Person): ModelAndView {
+        val mv = ModelAndView()
+        var returnClass: ReturnClass = loginService.loginPage("perform", person)
+
+        mv.addObject("returnClass", returnClass)
         mv.viewName = "petCityMain"
         return mv
     }

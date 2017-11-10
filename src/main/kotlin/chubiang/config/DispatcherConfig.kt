@@ -35,7 +35,7 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer?) {
         configurer!!.ignoreUnknownPathExtensions(false).defaultContentType(MediaType.TEXT_HTML)
-    }
+}
 
     // Spring security 사용자정의 AccessDeniedHandler handler Bean 등록
     @Bean

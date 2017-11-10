@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse
 
 class CustomAccessDeniedHandler: AccessDeniedHandler {
 
-    private var log = LogFactory.getLog(CustomAccessDeniedHandler::class.java)
+    private val log = LogFactory.getLog(CustomAccessDeniedHandler::class.java)
 
     override fun handle(request: HttpServletRequest?, response: HttpServletResponse?, accessDeniedException: AccessDeniedException?) {
         var auth: Authentication = SecurityContextHolder.getContext().authentication
