@@ -16,6 +16,7 @@
                         <span class="character-checkbox" onclick="showPassword()"></span>
                         <span class="label">Show password</span>
                     </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
                 </form>
                 <a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">Forgot your password?</a>
