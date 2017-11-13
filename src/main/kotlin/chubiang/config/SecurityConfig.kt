@@ -25,6 +25,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
                 .withUser("admin@example.co.kr")
                 .password("1234")
                 .authorities("ROLE_ADMIN","ROLE_USER")
+        print("들어왔음")
     }
 
     // http 프로토콜 url이 들어올 때 적용시킬 spring security 설정
@@ -37,10 +38,11 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
                 .antMatchers("/home").access("hasRole('ROLE_USER')")
                     .and()
                 .formLogin().loginPage("/login").permitAll()
-                .loginProcessingUrl("/login?perform")
-                .successHandler(CustomAuthenticationSuccessHandler())
+                .loginProcessingUrl("/signin")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/home")
-                .failureUrl("/login?fail")
+                .failureUrl("/login")
                 .usernameParameter("email").passwordParameter("password")
                     .and()
                 .logout()

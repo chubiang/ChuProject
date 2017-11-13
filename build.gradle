@@ -29,12 +29,16 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		// final인 data class의 proxy 객체를 생성 가능하도록 확장해줌
 		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 		classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$extraConfVersion"
+		// 어노테이션이 붙은 클래스에 자동으로 기본 생성자를 만들도록 해줌
 		classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
 	}
 
 }
+
+
 
 group "chubiang"
 
@@ -72,6 +76,10 @@ jar {
 	}
 }
 
+allOpen {
+	annotation "javax.persistence.Entity"
+}
+
 repositories {
 	mavenCentral()
 }
@@ -94,8 +102,16 @@ dependencies {
 	compile("javax.servlet.jsp:jsp-api:2.2")
 	//Log Dependencies
 	compile loggers
-	//JPA
-	compile "org.springframework.data:spring-data-jpa:1.5.0.RELEASE"
+
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.10.Final'
+	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.1.1'
+
 	// https://mvnrepository.com/artifact/org.freemarker/freemarker
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.25-incubating'
 	// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper

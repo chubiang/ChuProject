@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class LoginService {
-    fun loginPage(type: String, person: Person): ReturnClass{
+    fun loginPage(type: String, person: Person): String{
         var pageName: String = "login"
-        if(type == "perform") {
-            pageName = "home"
+            if(type == "perform") {
+                return "home"
             // person DB에서 select값 리턴
         }
-        return ReturnClass(pageName, person)
+        return "login"
     }
 }

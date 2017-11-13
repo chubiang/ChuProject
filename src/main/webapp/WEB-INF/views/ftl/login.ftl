@@ -3,7 +3,7 @@
     <div class="row">
             <div class="form-wrap">
                 <h1>Log in with your email account</h1>
-                <form role="form" action="/login?perform" method="post" id="login-form" autocomplete="off">
+                <form role="form" action="/signin" method="post" id="login-form" autocomplete="off">
                     <div class="form-group">
                         <label for="email" class="sr-only">Email</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com">
@@ -16,6 +16,7 @@
                         <span class="character-checkbox" onclick="showPassword()"></span>
                         <span class="label">Show password</span>
                     </div>
+                    <input type="hidden" name="type" value="perform">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
                 </form>
