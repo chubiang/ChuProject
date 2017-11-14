@@ -54,6 +54,8 @@ apply plugin: 'eclipse-wtp' // 이클립스에서 구동하고 배포하기위�
 apply plugin: 'kotlin-spring'
 // Kotlin-jpa compiler plugin
 apply plugin: "kotlin-jpa"
+// Flyway plugin
+apply plugin: "org.flywaydb.flyway"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -103,6 +105,9 @@ dependencies {
 	//Log Dependencies
 	compile loggers
 
+	//flyway
+	classpath "gradle.plugin.com.boxfuse.client:flyway-release:4.2.0"
+
 	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
 	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -127,7 +132,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
 	compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.3.RELEASE'
 
-
+}
+//http://www.popit.kr/%EB%82%98%EB%A7%8C-%EB%AA%A8%EB%A5%B4%EA%B3%A0-%EC%9E%88%EB%8D%98-flyway-db-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98-tool/
+ext.flywayProps = new Properties()
+flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/data-access.properties"))
+flyway {
+	url = 'jdbc:postgresql://flywayProps['dbIp']:flywayProps['dbPort']/chuproject'
+	user = flywayProps['dbUsername']
+	password = flywayProps['dbPassword']
+	locations = ['filesystem:db/migration']
 }
 
 configurations {
