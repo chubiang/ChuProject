@@ -1,6 +1,6 @@
 package chubiang.controller
 
-import chubiang.model.Person
+import chubiang.entities.Person
 import chubiang.model.ReturnClass
 import chubiang.service.LoginService
 import freemarker.template.Configuration
