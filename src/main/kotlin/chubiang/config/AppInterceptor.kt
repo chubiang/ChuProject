@@ -1,6 +1,5 @@
 package chubiang.config
 
-import freemarker.template.Configuration
 import org.apache.juli.logging.LogFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.ModelAndView

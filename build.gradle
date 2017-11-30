@@ -101,6 +101,8 @@ repositories {
 	mavenCentral()
 }
 dependencies {
+	jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+
 	//Junit
 	testCompile group: 'junit', name: 'junit', version: "${version.junit}"
 
@@ -175,12 +177,6 @@ jooq {
 			url = 'jdbc:postgresql://localhost:5432/chuproject'
 			user = 'nana'
 			password = 'nana'
-			properties {
-				property {
-					key = 'ssl'
-					value = 'true'
-				}
-			}
 		}
 
 		generator {
@@ -215,7 +211,7 @@ jooq {
 			}
 			target {
 				packageName = 'jooq'
-				directory = 'src/main/kotlin'
+				directory = 'src/main/jooq'
 			}
 		}
 	}
