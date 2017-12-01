@@ -18,15 +18,15 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = arrayOf(elements = "chubiang.repositories"))
+//@EnableJpaRepositories(basePackages = arrayOf(elements = "chubiang.repositories"))
 @PropertySource("classpath:jpa.properties")
-class RepositoryConfig {
+open class RepositoryConfig {
     /**
      * Jpa + Hibernate 5
      */
 
-    @Autowired
-    lateinit private var env: Environment
+//    @Autowired
+//    lateinit private var env: Environment
 
     @Bean
     fun dataSource(): DataSource {
@@ -38,35 +38,35 @@ class RepositoryConfig {
         return dataSource
     }
 
-    @Bean
-    fun entityManagerFactory(): EntityManagerFactory {
-        val vendorAdapter = HibernateJpaVendorAdapter()
-        vendorAdapter.setGenerateDdl(true)
-
-        val factory = LocalContainerEntityManagerFactoryBean()
-        factory.jpaVendorAdapter = vendorAdapter
-        factory.setPackagesToScan("chubiang.entities")
-        factory.dataSource = dataSource()
-        factory.setJpaProperties(jpaProperties())
-        factory.afterPropertiesSet()
-        return factory.`object`
-    }
-
-    private fun jpaProperties(): Properties {
-        val properties = Properties()
-        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"))
-        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"))
-        properties.setProperty("hibernate.current_session_context_class", env.getProperty("hibernate.current_session_context_class"))
-        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"))
-        return properties
-    }
-
-    @Bean
-    fun transactionManager(): JpaTransactionManager {
-        val txManager = JpaTransactionManager()
-        txManager.entityManagerFactory = entityManagerFactory()
-        return txManager
-    }
+//    @Bean
+//    fun entityManagerFactory(): EntityManagerFactory {
+//        val vendorAdapter = HibernateJpaVendorAdapter()
+//        vendorAdapter.setGenerateDdl(true)
+//
+//        val factory = LocalContainerEntityManagerFactoryBean()
+//        factory.jpaVendorAdapter = vendorAdapter
+//        factory.setPackagesToScan("chubiang.entities")
+//        factory.dataSource = dataSource()
+//        factory.setJpaProperties(jpaProperties())
+//        factory.afterPropertiesSet()
+//        return factory.`object`
+//    }
+//
+//    private fun jpaProperties(): Properties {
+//        val properties = Properties()
+//        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"))
+//        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"))
+//        properties.setProperty("hibernate.current_session_context_class", env.getProperty("hibernate.current_session_context_class"))
+//        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"))
+//        return properties
+//    }
+//
+//    @Bean
+//    fun transactionManager(): JpaTransactionManager {
+//        val txManager = JpaTransactionManager()
+//        txManager.entityManagerFactory = entityManagerFactory()
+//        return txManager
+//    }
 
     /**
      * PersistenceExceptionTranslationPostProcessor is a bean post processor
@@ -75,8 +75,8 @@ class RepositoryConfig {
      * Spring's unchecked data access exceptions (i.e. a subclass of
      * DataAccessException).
      */
-    @Bean
-    fun exceptionTranslation() = PersistenceExceptionTranslationPostProcessor()
+//    @Bean
+//    fun exceptionTranslation() = PersistenceExceptionTranslationPostProcessor()
 
 
 }

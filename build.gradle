@@ -9,6 +9,8 @@ def version = [
 
 List loggers = [
 		"org.slf4j:slf4j-api:${slf4jVersion}",
+
+
 		"org.slf4j:jcl-over-slf4j:${slf4jVersion}",
 		"org.slf4j:log4j-over-slf4j:${slf4jVersion}",
 		"org.slf4j:jul-to-slf4j:${slf4jVersion}",
@@ -36,7 +38,6 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 		// final인 data class의 proxy 객체를 생성 가능하도록 확장해줌
 		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
@@ -47,8 +48,9 @@ buildscript {
 		classpath "gradle.plugin.com.boxfuse.client:flyway-release:$flywayVersion"
 		//jooq
 		classpath "nu.studer:gradle-jooq-plugin:$jooqPluginVersion"
+		//lombok
+		classpath "net.ltgt.gradle:gradle-apt-plugin:0.13"
 	}
-
 }
 
 
@@ -69,6 +71,8 @@ apply plugin: "kotlin-jpa"
 apply plugin: "nu.studer.jooq"
 // Flyway plugin
 apply plugin: "org.flywaydb.flyway"
+// lombok
+apply plugin: "net.ltgt.apt"
 
 
 sourceCompatibility = 1.8
@@ -102,6 +106,8 @@ repositories {
 }
 dependencies {
 	jooqRuntime "org.postgresql:postgresql:$postgresqlVersion"
+	compileOnly 'org.projectlombok:lombok:1.16.18'
+	apt "org.projectlombok:lombok:1.16.18"
 
 	//Junit
 	testCompile group: 'junit', name: 'junit', version: "${version.junit}"
@@ -154,6 +160,7 @@ dependencies {
 
 
 }
+
 // flyway 설정
 ext.flywayProps = new Properties()
 flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/data-access.properties"))
@@ -206,8 +213,8 @@ jooq {
 				javaTimeTypes = true
 			}
 			target {
-				packageName = 'model'
-				directory = 'src/main/jooq'
+				packageName = 'jooq.model'
+				directory = 'src/main/kotlin'
 			}
 		}
 	}

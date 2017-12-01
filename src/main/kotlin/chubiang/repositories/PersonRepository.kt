@@ -1,33 +1,31 @@
 package chubiang.repositories
 
-import chubiang.entities.Person
+import chubiang.model.Person
+import jooq.model.tables.pojos.Person as jooqPerson
+import jooq.model.tables.Person.PERSON
+import org.jooq.Record
+import org.jooq.Result
+import org.jooq.impl.DSL.field
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 class PersonRepository {
-/*
--DB 듀토리얼
-http://www.postgresqltutorial.com/
--JPA Example
-http://wonwoo.ml/index.php/post/766
- */
-    @PersistenceContext
-    lateinit var entityManager: EntityManager
+    val create = GlobalRepository().dslContext
 
-    @Transactional(readOnly=false)
-    fun create(person: Person) {
-        entityManager.persist(person)
+    fun findPersonEmail(email: String): Any? {
+        return create.select()
+                .from(PERSON)
+                .where(field("EMAIL").eq(email))
+                .fetchOne(field("EMAIL"))
     }
 
-    @Transactional(readOnly=true)
-    @Throws(Exception::class)
-    fun getByEmail(email: String): Any? {
-        return entityManager.createNativeQuery("SELECT * FROM Person WHERE email = :email")
-                .setParameter("email", email)
-                .singleResult
+    fun findPersonForLogin(person: Person): MutableList<jooqPerson>? {
+        return create.select()
+                .from(PERSON)
+                .where(field("EMAIL").eq(person.email))
+                .and(field("PASSWORD").eq(person.password))
+                .fetchInto(jooqPerson::class.java)
     }
 }

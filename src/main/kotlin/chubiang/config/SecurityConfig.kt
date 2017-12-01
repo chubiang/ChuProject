@@ -1,32 +1,36 @@
 package chubiang.config
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import javax.sql.DataSource
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig: WebSecurityConfigurerAdapter(){
 
-//    @Autowired
-//    lateinit var dataSource: DataSource
-
-    // 글로벌 범위의 spring security 설정
     @Autowired
     @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder){
-//        auth.jdbcAuthentication().dataSource()
-        auth.inMemoryAuthentication()
-                .withUser("admin@example.co.kr")
-                .password("1234")
-                .authorities("ROLE_ADMIN","ROLE_USER")
-        print("들어왔음")
+    fun configAuthentication(auth: AuthenticationManagerBuilder) {
+        auth.jdbcAuthentication().passwordEncoder(passwordEncoder())
     }
+
+
+    // 글로벌 범위의 spring security 설정
+//    @Autowired
+//    @Throws(Exception::class)
+//    fun configureGlobal(auth: AuthenticationManagerBuilder){
+//        auth.inMemoryAuthentication()
+//                .withUser("admin@example.co.kr")
+//                .password("1234")
+//                .authorities("ROLE_ADMIN","ROLE_USER")
+//        print("들어왔음")
+//    }
 
     // http 프로토콜 url이 들어올 때 적용시킬 spring security 설정
     @Throws(Exception::class)
@@ -54,4 +58,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
                 .and().exceptionHandling().accessDeniedPage("/error403")
     }
 
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 }
