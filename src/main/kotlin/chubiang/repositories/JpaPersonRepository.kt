@@ -8,7 +8,7 @@ package chubiang.repositories
 
 //@Repository
 //@Transactional
-class JpaPersonRepository {
+//class JpaPersonRepository {
 /*
 -DB 듀토리얼
 http://www.postgresqltutorial.com/
@@ -30,4 +30,4 @@ http://wonwoo.ml/index.php/post/766
 //                .setParameter("email", email)
 //                .singleResult
 //    }
-}
+//}

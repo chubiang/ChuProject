@@ -20,7 +20,7 @@ import javax.sql.DataSource
 @EnableTransactionManagement
 //@EnableJpaRepositories(basePackages = arrayOf(elements = "chubiang.repositories"))
 @PropertySource("classpath:jpa.properties")
-open class RepositoryConfig {
+class RepositoryConfig {
     /**
      * Jpa + Hibernate 5
      */

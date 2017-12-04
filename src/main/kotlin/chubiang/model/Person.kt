@@ -1,7 +1,9 @@
 package chubiang.model
 
+import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
+@Component
 data class Person (
         val personno: Int? = null,
         val username: String? = null,
@@ -12,5 +14,7 @@ data class Person (
         val petfamilyno: Int? = null,
         val etc: String? = null,
         val makedate: LocalDateTime? = null,
-        val updatedate: LocalDateTime? = null
+        val updatedate: LocalDateTime? = null,
+        val role: String? = null,
+        val enabled: String? = null
 )

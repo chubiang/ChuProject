@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver
 
 @EnableWebMvc
 @Configuration
-@ComponentScan( basePackages =  arrayOf("chubiang","jooq.model") )
+@ComponentScan( basePackages =  arrayOf("chubiang.*","jooq.model") )
 class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     @Autowired

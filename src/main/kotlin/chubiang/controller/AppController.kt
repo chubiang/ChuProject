@@ -2,7 +2,6 @@ package chubiang.controller
 
 import chubiang.model.Person
 import chubiang.model.ReturnClass
-import chubiang.service.LoginService
 import freemarker.template.Configuration
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,9 +20,6 @@ class AppController {
 
     private val logger = LoggerFactory.getLogger(AppController::class.java)
     private val cfg = Configuration(Configuration.VERSION_2_3_25)
-
-    @Autowired
-    private lateinit var loginService: LoginService
 
     //jsp 페이지
     @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
@@ -69,7 +65,7 @@ class AppController {
 
     @RequestMapping(value = "/signin", method = arrayOf(RequestMethod.POST))
     fun loginProcess(@ModelAttribute person: Person, @RequestParam type: String) {
-        loginService.loginPage(type,person)
+//        loginService.loginPage(type,person)
     }
 
 }
