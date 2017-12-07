@@ -214,7 +214,7 @@ jooq {
 			}
 			target {
 				packageName = 'jooq.model'
-				directory = 'src/main/kotlin'
+//				directory = 'src/main/kotlin'
 			}
 		}
 	}

@@ -11,8 +11,8 @@ import org.jooq.impl.DSL.field
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
-@Repository(value = "personRepository")
-@Transactional(readOnly = true)
+@Repository
+//@Transactional(readOnly = true)
 class PersonRepository {
     val create = GlobalRepository().dslContext
 
