@@ -1,21 +1,23 @@
 package chubiang.config
 
+import chubiang.handler.CustomAccessDeniedHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver
+import javax.servlet.Filter
 
-
-@EnableWebMvc
 @Configuration
-@ComponentScan( basePackages =  arrayOf("chubiang.*","jooq.model") )
+@EnableWebMvc
+@ComponentScan(basePackages = ["chubiang"])
 class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     @Autowired
@@ -35,7 +37,15 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer?) {
         configurer!!.ignoreUnknownPathExtensions(false).defaultContentType(MediaType.TEXT_HTML)
-}
+    }
+
+    @Bean
+    fun characterEncodingFilter(): Filter {
+        val characterEncodingFilter = CharacterEncodingFilter()
+        characterEncodingFilter.encoding = "UTF-8"
+        characterEncodingFilter.setForceEncoding(true)
+        return characterEncodingFilter
+    }
 
     // Spring security 사용자정의 AccessDeniedHandler handler Bean 등록
     @Bean

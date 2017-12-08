@@ -1,4 +1,4 @@
-package chubiang.config
+package chubiang.handler
 
 import org.apache.juli.logging.LogFactory
 import org.springframework.security.access.AccessDeniedException

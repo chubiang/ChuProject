@@ -20,14 +20,14 @@ class PersonRepository {
         return create.select()
                 .from(USER_ROLES)
                 .where(field("EMAIL").eq(email))
-                .fetchAny().into(Role::class.java)
+                .fetchOne().into(Role::class.java)
     }
 
     fun findPersonEmail(email: String): Person? {
         return create.select()
                 .from(PERSON)
                 .where(field("EMAIL").eq(email))
-                .fetchAny().into(Person::class.java)
+                .fetchOne().into(Person::class.java)
     }
 
     fun findPersonForLogin(person: Person): MutableList<jooqPerson>? {

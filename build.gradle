@@ -1,28 +1,9 @@
-//버전 관리
-def version = [
-		spring: '4.3.10.RELEASE',
-		servletAPI: '3.1.0',
-		commonsCollections: '3.2.1',
-		junit: '4.12',
-		slf4j: '1.7.5'
-]
-
-List loggers = [
-		"org.slf4j:slf4j-api:${slf4jVersion}",
-
-
-		"org.slf4j:jcl-over-slf4j:${slf4jVersion}",
-		"org.slf4j:log4j-over-slf4j:${slf4jVersion}",
-		"org.slf4j:jul-to-slf4j:${slf4jVersion}",
-		"ch.qos.logback:logback-core:${logbackVersion}",
-		"ch.qos.logback:logback-classic:${logbackVersion}"
-]
-
 buildscript {
 	ext {
-		springVersion = '4.3.10.RELEASE'
-		kotlin_version = '1.1.2-4'
-		extraConfVersion = '2.2.+'
+		springVersion = '5.0.2.RELEASE'
+		servletAPI = '3.1.0'
+		junitVersion = '4.12'
+		kotlin_version = '1.2.0'
 		slf4jVersion = '1.7.5'
 		logbackVersion = '1.0.13'
 		postgresqlVersion = "42.1.4"
@@ -41,7 +22,6 @@ buildscript {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 		// final인 data class의 proxy 객체를 생성 가능하도록 확장해줌
 		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
-		classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$extraConfVersion"
 		// 어노테이션이 붙은 클래스에 자동으로 기본 생성자를 만들도록 해줌
 		classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
 		//flyway
@@ -53,30 +33,43 @@ buildscript {
 	}
 }
 
+plugins {
+	id "org.jetbrains.kotlin.plugin.spring" version "1.2.0"
+	id "org.jetbrains.kotlin.plugin.jpa" version "1.2.0"
+	id "org.flywaydb.flyway" version "4.2.0"
+	id 'nu.studer.jooq' version '2.0.9'
+	id 'net.ltgt.apt' version '0.10'
+}
 
 group "chubiang"
+version '1.0-SNAPSHOT'
 
-apply plugin: 'groovy'
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: 'kotlin'
-apply plugin: "kotlin-allopen"
-apply plugin: 'provided-base'
+apply plugin: 'war'
+
 apply plugin: 'eclipse-wtp' // 이클립스에서 구동하고 배포하기위해 플러그인 설치합니다.
-// Bindings between kotlin and spring
-apply plugin: 'kotlin-spring'
-// Kotlin-jpa compiler plugin
-apply plugin: "kotlin-jpa"
-// Jooq plugin
-apply plugin: "nu.studer.jooq"
-// Flyway plugin
-apply plugin: "org.flywaydb.flyway"
-// lombok
-apply plugin: "net.ltgt.apt"
 
-
+// 자바 jvm 컴파일 버전
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+// 코틀린 jvm 컴파일 버전
+compileKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
+
+List loggers = [
+		"org.slf4j:slf4j-api:$slf4jVersion",
+		"org.slf4j:jcl-over-slf4j:$slf4jVersion",
+		"org.slf4j:log4j-over-slf4j:$slf4jVersion",
+		"org.slf4j:jul-to-slf4j:$slf4jVersion",
+		"ch.qos.logback:logback-core:$logbackVersion",
+		"ch.qos.logback:logback-classic:$logbackVersion"
+]
 
 eclipse {
 	// 빌드하고나면 프로젝트정보도 같이 지워지는데, Gradle프로젝트임을 인식시켜줍니다.
@@ -97,6 +90,7 @@ jar {
 }
 
 allOpen {
+	//for jpa
 	annotation "javax.persistence.Entity"
 }
 
@@ -110,7 +104,9 @@ dependencies {
 	apt "org.projectlombok:lombok:1.16.18"
 
 	//Junit
-	testCompile group: 'junit', name: 'junit', version: "${version.junit}"
+	testCompile group: 'junit', name: 'junit', version: "$junitVersion"
+	testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
+	testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
 
 	// Kotlin Dependencies
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -118,58 +114,64 @@ dependencies {
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
 	// Spring Dependencies
-	providedCompile "javax.servlet:javax.servlet-api:${version.servletAPI}"
-	compile "org.springframework:spring-webmvc:${version.spring}"
-	compile 'org.springframework:spring-context-support:5.0.0.RELEASE'
-	compile group: 'commons-collections', name: 'commons-collections', version: "${version.commonsCollections}"
-	compile("javax.servlet:jstl:1.2")
-	compile("javax.servlet.jsp:jsp-api:2.2")
-	//Log Dependencies
-	compile loggers
+	providedCompile "javax.servlet:javax.servlet-api:$servletAPI"
 
-	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	compile "org.springframework:spring-webmvc:$springVersion"
+
+	compile group: 'org.springframework', name: 'spring-jdbc', version: "$springVersion"
+
+	compile group: 'org.springframework', name: 'spring-tx', version: "$springVersion"
+
+	compile "org.springframework:spring-context-support:$springVersion"
+
+	compile "javax.servlet:jstl:1.2"
+
+	compile "javax.servlet.jsp:jsp-api:2.2"
+
 	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
-	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
-	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.10.Final'
-	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+
 	compile group: 'org.postgresql', name: 'postgresql', version: "$postgresqlVersion"
-	// https://mvnrepository.com/artifact/org.flywaydb/flyway-gradle-plugin
+
 	compile group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '4.2.0'
 
-	// https://mvnrepository.com/artifact/org.freemarker/freemarker
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.25-incubating'
-	// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
+
 	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.20'
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.9'
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.9'
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.0'
-	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
+
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
+
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.3.RELEASE'
-	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+
 	compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.3.RELEASE'
 
-	//Jooq
+	// jooq
 	compile group: 'org.jooq', name: 'jooq', version: '3.10.1'
+
 	compile group: 'org.jooq', name: 'jooq-meta', version: '3.10.1'
+
 	compile group: 'org.jooq', name: 'jooq-codegen', version: '3.10.1'
 
+	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.4'
+
+	//Log Dependencies
+	compile loggers
 
 }
 
 // flyway 설정
-ext.flywayProps = new Properties()
-flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/data-access.properties"))
+ext.extProps = new Properties()
+extProps.load(file("/src/main/resources/data-access.properties").newReader())
 
 flyway {
-	url = 'jdbc:postgresql://localhost:5432/chuproject'
-	driver='org.postgresql.Driver'
-	user = flywayProps['dbUsername']
-	password = flywayProps['dbPassword']
+	url = extProps['dbUrl']
+	driver=extProps['dbDriver']
+	user = extProps['dbUser']
+	password = extProps['dbPassword']
 	locations = ['classpath:db/migration']
 }
 
@@ -180,10 +182,10 @@ jooq {
 	edition = 'OSS'
 	sample(sourceSets.main) {
 		jdbc {
-			driver = 'org.postgresql.Driver'
-			url = 'jdbc:postgresql://localhost:5432/chuproject'
-			user = 'nana'
-			password = 'nana'
+			driver = extProps['dbDriver']
+			url = extProps['dbUrl']
+			user = extProps['dbUser']
+			password = extProps['dbPassword']
 		}
 
 		generator {
@@ -214,14 +216,10 @@ jooq {
 			}
 			target {
 				packageName = 'jooq.model'
-//				directory = 'src/main/kotlin'
 			}
 		}
 	}
 }
-
-
-
 
 configurations {
 	all.collect { configuration ->

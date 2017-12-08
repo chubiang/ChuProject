@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled=true)
-@ComponentScan(basePackages = arrayOf("chubiang.service"))
+@ComponentScan(basePackages = ["chubiang"])
 @Import(CustomUserDetailsService::class)
 class SecurityConfig: WebSecurityConfigurerAdapter(){
 

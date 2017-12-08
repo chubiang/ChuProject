@@ -1,11 +1,8 @@
 package chubiang.config
 
-import org.apache.catalina.SessionListener
-import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer
 import javax.servlet.Filter
-import javax.servlet.ServletContext
 
 
 class ApplicationInitializer : AbstractAnnotationConfigDispatcherServletInitializer() {
@@ -26,7 +23,7 @@ class ApplicationInitializer : AbstractAnnotationConfigDispatcherServletInitiali
     }
 
     override fun getRootConfigClasses(): Array<Class<*>>? {
-        return arrayOf(RepositoryConfig::class.java, SecurityConfig::class.java)
+        return arrayOf(PersistenceConfig::class.java, SecurityConfig::class.java)
     }
 
 }
