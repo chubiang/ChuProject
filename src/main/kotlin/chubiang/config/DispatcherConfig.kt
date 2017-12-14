@@ -1,14 +1,18 @@
 package chubiang.config
 
 import chubiang.handler.CustomAccessDeniedHandler
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.resource.GzipResourceResolver
+import org.springframework.web.servlet.resource.PathResourceResolver
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
@@ -28,7 +32,11 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry?) {
-        registry!!.addResourceHandler("/resources/**").addResourceLocations("/resources/")
+        registry!!.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/")
+                .resourceChain(true)
+                .addResolver(GzipResourceResolver())
+                .addResolver(PathResourceResolver())
     }
 
     override fun configureDefaultServletHandling(configurer: DefaultServletHandlerConfigurer?) {
@@ -37,14 +45,6 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer?) {
         configurer!!.ignoreUnknownPathExtensions(false).defaultContentType(MediaType.TEXT_HTML)
-    }
-
-    @Bean
-    fun characterEncodingFilter(): Filter {
-        val characterEncodingFilter = CharacterEncodingFilter()
-        characterEncodingFilter.encoding = "UTF-8"
-        characterEncodingFilter.setForceEncoding(true)
-        return characterEncodingFilter
     }
 
     // Spring security 사용자정의 AccessDeniedHandler handler Bean 등록
@@ -82,5 +82,10 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
         return freeMarkerConfigurer
     }
 
+    @Bean
+    fun validator(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
+
+    @Bean
+    fun objectMapper(): ObjectMapper = ObjectMapper()
 
 }

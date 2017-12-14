@@ -35,19 +35,6 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
     }
 
 
-    // 글로벌 범위의 spring security 설정
-//    @Autowired
-//    @Throws(Exception::class)
-//    fun configureGlobal(auth: AuthenticationManagerBuilder){
-//        auth.inMemoryAuthentication()
-//                .withUser("admin@example.co.kr")
-//                .password("1234")
-//                .authorities("ROLE_ADMIN","ROLE_USER")
-//        print("들어왔음")
-//    }
-
-
-
     // http 프로토콜 url이 들어올 때 적용시킬 spring security 설정
     @Throws(Exception::class)
     override fun configure (http: HttpSecurity) {
