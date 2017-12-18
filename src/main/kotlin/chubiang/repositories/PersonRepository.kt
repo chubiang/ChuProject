@@ -5,17 +5,15 @@ import chubiang.model.Role
 import jooq.model.tables.pojos.Person as jooqPerson
 import jooq.model.tables.Person.PERSON
 import jooq.model.tables.UserRoles.USER_ROLES
-import org.jooq.Record
-import org.jooq.Result
 import org.jooq.impl.DSL.field
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
 @Repository
-//@Transactional(readOnly = true)
 class PersonRepository {
     val create = GlobalRepository().dslContext
 
+    @Transactional(readOnly = true)
     fun findPersonRole(email: String): Role? {
         return create.select()
                 .from(USER_ROLES)
@@ -23,13 +21,15 @@ class PersonRepository {
                 .fetchOne().into(Role::class.java)
     }
 
-    fun findPersonEmail(email: String): Person? {
+    @Transactional(readOnly = true)
+    fun findPersonEmail(email: String): jooqPerson? {
         return create.select()
                 .from(PERSON)
                 .where(field("EMAIL").eq(email))
-                .fetchOne().into(Person::class.java)
+                .fetchOne().into(jooqPerson::class.java)
     }
 
+    @Transactional(readOnly = true)
     fun findPersonForLogin(person: Person): MutableList<jooqPerson>? {
         return create.select()
                 .from(PERSON)
