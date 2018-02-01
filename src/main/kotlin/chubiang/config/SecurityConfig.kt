@@ -1,5 +1,6 @@
 package chubiang.config
 
+import chubiang.handler.CustomAccessDeniedHandler
 import chubiang.service.CustomUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -58,7 +59,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                     .and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/error403")
+                .and().exceptionHandling().accessDeniedHandler(CustomAccessDeniedHandler()).accessDeniedPage("/error403")
     }
 
 }

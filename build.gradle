@@ -271,6 +271,7 @@ task wrapper(type: Wrapper) {
 rebel {
 	alwaysGenerate = true
 	showGenerated = true
+
 	rootPath = "/Users/chubiang/Documents/project/chuProject"
 	classpath {
 		resource {
