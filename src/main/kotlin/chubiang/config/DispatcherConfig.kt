@@ -21,7 +21,7 @@ import javax.servlet.Filter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = ["chubiang"])
+@ComponentScan(basePackages = arrayOf("chubiang"))
 class DispatcherConfig : WebMvcConfigurerAdapter() {
 
     @Autowired

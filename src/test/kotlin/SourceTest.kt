@@ -28,6 +28,6 @@ class  SourceTest {
         /**
          * SQL Statemant Test
          */
-
+        print(personRepository.findUserRoleByEmail("nana@gmail.com"))
     }
 }

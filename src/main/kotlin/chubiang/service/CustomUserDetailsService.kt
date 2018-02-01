@@ -1,5 +1,6 @@
 package chubiang.service
 
+import chubiang.model.Person
 import jooq.model.tables.pojos.Person as DP
 import chubiang.repositories.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,25 +9,27 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+@Component
+class CustomUserDetails(val person: Person) : UserDetails {
 
-class CustomUserDetails(val person: DP) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return person.
+        return arrayListOf(SimpleGrantedAuthority(person.role))
     }
 
     override fun isEnabled(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun getUsername(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return person.username!!
     }
 
     override fun getPassword(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return person.password!!
     }
 
     /*
@@ -54,9 +57,10 @@ class CustomUserDetailsService: UserDetailsService{
     lateinit var personRepository: PersonRepository
 
     @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(email: String?): CustomUserDetails {
-        val person = personRepository.findPersonEmail(email!!)
-        val authority: GrantedAuthority = SimpleGrantedAuthority(personRepository.findPersonRole(person!!.email!!)!!.role)
+    override fun loadUserByUsername(email: String): CustomUserDetails {
+        val person = personRepository.findUserRoleByEmail(email)
+        val authority: GrantedAuthority = SimpleGrantedAuthority(person.role)
+        println(" ###### GrantedAuthority ------- $authority ")
 
         return CustomUserDetails(person)
     }

@@ -37,4 +37,15 @@ class PersonRepository {
                 .and(field("PASSWORD").eq(person.password))
                 .fetchInto(jooqPerson::class.java)
     }
+
+    @Transactional(readOnly = true)
+    fun findUserRoleByEmail(email: String): Person {
+        return create.select()
+                .from(PERSON)
+                .join(USER_ROLES).on(PERSON.EMAIL.eq(USER_ROLES.EMAIL))
+                .where(field(PERSON.EMAIL).eq(email))
+                .fetchOne().into(Person::class.java)
+    }
+
+
 }

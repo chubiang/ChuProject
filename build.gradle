@@ -39,13 +39,14 @@ buildscript {
 		classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
 		classpath group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
 		classpath 'gradle.plugin.de.fuerstenau:BuildConfigPlugin:1.1.8'
+		classpath "org.zeroturnaround:gradle-jrebel-plugin:1.1.7"
 	}
 }
 
 plugins {
 	id "org.jetbrains.kotlin.plugin.spring" version "1.2.0"
 	id 'de.fuerstenau.buildconfig' version '1.1.8'
-	id "org.zeroturnaround.gradle.jrebel" version "1.1.6"
+	id "org.zeroturnaround.gradle.jrebel" version "1.1.7"
 	id "org.flywaydb.flyway" version "4.2.0"
 	id 'nu.studer.jooq' version '2.0.9'
 	id "org.jetbrains.kotlin.plugin.jpa" version "1.2.0"
@@ -192,13 +193,15 @@ buildConfig {
 
 // flyway 설정
 ext.extProps = new Properties()
-extProps.load(file("/src/main/resources/data-access.properties").newReader())
+extProps.load(file("src/main/resources/data-access.properties").newReader())
 
 flyway {
 	url = databaseUrl
 	user = databaseName
 	password = databasePassword
-	locations = ['classpath:db/migration']
+	// mac os에서는 안써줌
+	//locations = ['classpath:db/migration']
+	encoding = 'UTF-8'
 }
 
 // Use your favourite XML builder to construct the code generation configuration file
@@ -268,4 +271,20 @@ task wrapper(type: Wrapper) {
 rebel {
 	alwaysGenerate = true
 	showGenerated = true
+	rootPath = "/Users/chubiang/Documents/project/chuProject"
+	classpath {
+		resource {
+			directory = "/out/production/classes/chubiang"
+		}
+
+		resource {
+			directory = "/out/production/resources"
+		}
+	}
+	web {
+		resource {
+			directory = "/src/main/webapp/resources"
+			target = "/src/main/webapp/WEB-INF/views"
+		}
+	}
 }

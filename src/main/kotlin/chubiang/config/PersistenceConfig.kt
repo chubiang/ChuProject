@@ -1,27 +1,16 @@
 package chubiang.config
 
+import chuproject.BuildConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.ExecuteContext
 import org.jooq.SQLDialect
 import org.jooq.impl.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.PropertySource
-import org.springframework.core.env.Environment
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
-import org.springframework.jdbc.datasource.DriverManagerDataSource
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator
-import org.springframework.orm.jpa.JpaTransactionManager
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
 import org.springframework.transaction.annotation.EnableTransactionManagement
-import java.util.*
-import javax.persistence.EntityManagerFactory
-import javax.sql.DataSource
 
 open class ExceptionTranslator : DefaultExecuteListener() {
     override fun exception(context: ExecuteContext?) {
@@ -38,11 +27,11 @@ class PersistenceConfig {
 
     fun dataSource(): HikariDataSource {
         val ds = HikariDataSource()
-        ds.maximumPoolSize = 100
-        ds.driverClassName = "org.postgresql.Driver"
-        ds.jdbcUrl = "jdbc:postgresql://localhost:5432/chuproject"
-        ds.username = "nana"
-        ds.password = "nana"
+        ds.maximumPoolSize = 120
+        ds.driverClassName = BuildConfig.DRIVER_CLASS_NAME
+        ds.jdbcUrl = BuildConfig.JDBC_URL
+        ds.username = BuildConfig.JDBC_USERNAME
+        ds.password = BuildConfig.JDBC_PASSWORD
         return ds
     }
 

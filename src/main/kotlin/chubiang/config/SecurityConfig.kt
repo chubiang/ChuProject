@@ -26,7 +26,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
 
 
     @Autowired
-    private lateinit var customUserDetailsService: UserDetailsService
+    private lateinit var customUserDetailsService: CustomUserDetailsService
 
     @Autowired
     @Throws(Exception::class)
