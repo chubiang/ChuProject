@@ -56,7 +56,7 @@ class AppController {
         return mv
     }
 
-    @RequestMapping(value = ["/l≈ogout"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/logout"], method = [RequestMethod.GET])
     fun logout(request: HttpServletRequest, response: HttpServletResponse): String {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         SecurityContextLogoutHandler().logout(request, response, auth)

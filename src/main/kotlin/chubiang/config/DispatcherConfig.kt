@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
-import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.resource.GzipResourceResolver
 import org.springframework.web.servlet.resource.PathResourceResolver
@@ -17,7 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver
-import javax.servlet.Filter
+
 
 @Configuration
 @EnableWebMvc
@@ -52,7 +51,6 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
     fun accessDeniedHandler(): AccessDeniedHandler {
         return CustomAccessDeniedHandler()
     }
-
     @Bean
     fun viewResolver(): InternalResourceViewResolver {
         val resolver = InternalResourceViewResolver()

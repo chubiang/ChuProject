@@ -20,6 +20,8 @@
 <#import "sidebarR.ftl" as sidebarR>
 <#import "home.ftl" as home>
 <#import "login.ftl" as login>
+<#--Error Page -->
+<#import "error403.ftl" as error403>
 <#--Navbar layout-->
 <@nav.layout></@nav.layout>
 
@@ -31,6 +33,9 @@
    <#if returnClass.viewName == "login">
         <@login.panel></@login.panel>
    </#if>
+    <#if returnClass.viewName == "error403">
+        <@error403.error403></@error403.error403>
+    </#if>
 </div>
 <#-- /.container -->
 

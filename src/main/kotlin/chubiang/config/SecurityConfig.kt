@@ -1,20 +1,16 @@
 package chubiang.config
 
-import chubiang.handler.CustomAccessDeniedHandler
 import chubiang.service.CustomUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Import
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.access.AccessDeniedHandler
 
 
 //특정 configuration 파일의 빈을 autowired 시키고 싶을 땐 import를 꼭해줘야 initializetion 문제가 안생김
@@ -30,6 +26,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
     private lateinit var customUserDetailsService: CustomUserDetailsService
 
     @Autowired
+    private lateinit var accessDeniedHandler: AccessDeniedHandler
+
+    @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(customUserDetailsService)
@@ -40,9 +39,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
     @Throws(Exception::class)
     override fun configure (http: HttpSecurity) {
         http.authorizeRequests()
-                .antMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
-                .antMatchers("/login*").anonymous().anyRequest().authenticated()
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/login*").permitAll()
                 .antMatchers("/home").access("hasRole('ROLE_USER')")
                     .and()
                 .formLogin().loginPage("/login").permitAll()
@@ -59,7 +58,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                     .and().csrf()
-                .and().exceptionHandling().accessDeniedHandler(CustomAccessDeniedHandler()).accessDeniedPage("/error403")
+                    .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
     }
 
 }
