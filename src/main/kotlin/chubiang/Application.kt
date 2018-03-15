@@ -4,6 +4,7 @@ import org.apache.catalina.startup.Tomcat
 import java.io.File
 import java.io.IOException
 
+class Application {
 object Application {
 
     private val PORT = 8080
@@ -36,4 +37,5 @@ object Application {
         }
     }
 
+}
 }

@@ -1,5 +1,6 @@
 package chubiang.config
 
+import chubiang.handler.CustomAccessDeniedHandler
 import chubiang.service.CustomUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.access.AccessDeniedHandler
@@ -26,21 +28,23 @@ class SecurityConfig: WebSecurityConfigurerAdapter(){
     private lateinit var customUserDetailsService: CustomUserDetailsService
 
     @Autowired
-    private lateinit var accessDeniedHandler: AccessDeniedHandler
+    private lateinit var accessDeniedHandler: CustomAccessDeniedHandler
 
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(customUserDetailsService)
     }
-
+    // resources 파일경로 접근 security가 accessDeniedFilter에서 Exception나지 않도록 무시해버림
+    override fun configure(web: WebSecurity?) {
+        web!!.ignoring().antMatchers("/resources/**")
+    }
 
     // http 프로토콜 url이 들어올 때 적용시킬 spring security 설정
     @Throws(Exception::class)
     override fun configure (http: HttpSecurity) {
         http.authorizeRequests()
                 .anyRequest().authenticated()
-                .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login*").permitAll()
                 .antMatchers("/home").access("hasRole('ROLE_USER')")
                     .and()

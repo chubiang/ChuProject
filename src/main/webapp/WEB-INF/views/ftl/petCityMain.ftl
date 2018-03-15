@@ -1,15 +1,14 @@
 <#-- @ftlvariable name="returnClass" type="chubiang.model.ReturnClass" -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <#--Cascading style sheet-->
-    <link rel="stylesheet" href="resources/css/bootstrap.css">
-    <link rel="stylesheet" href="resources/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="resources/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="resources/css/simple-sidebar.css">
-    <link rel="stylesheet" href="resources/css/main.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-reboot.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/simple-sidebar.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
     <title>PetCity</title>
 </head>
 <body>
@@ -43,9 +42,9 @@
 <@sidebarR.layout></@sidebarR.layout>
 
 <#--Javascript-->
-<script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="resources/js/popper.min.js"></script>
-<script type="text/javascript" src="resources/js/popper-utils.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="resources/js/popper.js"></script>
+<script type="text/javascript" src="resources/js/popper-utils.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.bundle.js"></script>
 <script type="text/javascript" src="resources/js/login.js"></script>

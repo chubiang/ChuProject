@@ -64,10 +64,10 @@ class DispatcherConfig : WebMvcConfigurerAdapter() {
     @Bean
     fun freemarkerViewResolver(): FreeMarkerViewResolver {
         val resolver = FreeMarkerViewResolver()
+        resolver.isCache = true
         resolver.setPrefix("")
         resolver.setSuffix(".ftl")
         resolver.setExposeSpringMacroHelpers(true)
-        resolver.setContentType("text/html;charset=UTF-8")
         resolver.order = 0
         return resolver
     }
