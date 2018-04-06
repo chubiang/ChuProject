@@ -19,7 +19,7 @@ class CustomAccessDeniedHandler: AccessDeniedHandler {
         // Ajax요청인지 확인을 위한 헤더값 추출
 //        val ajaxHeader = request!!.getHeader("x-Ajax-call")
 
-        var auth: Authentication = SecurityContextHolder.getContext().authentication
+        var auth: Authentication? = SecurityContextHolder.getContext().authentication
         if(auth != null) {
             log.debug("""Login User = ${auth.name} attempted to access the protected URL: ${request!!.requestURI}""")
         }

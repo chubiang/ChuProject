@@ -59,8 +59,7 @@ class CustomUserDetailsService: UserDetailsService{
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String): CustomUserDetails {
         val person = personRepository.findUserRoleByEmail(email)
-        val authority: GrantedAuthority = SimpleGrantedAuthority(person.role)
-        println(" ###### GrantedAuthority ------- $authority ")
+        print(" ***** login person info = $person")
 
         return CustomUserDetails(person)
     }

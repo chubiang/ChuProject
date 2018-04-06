@@ -27,7 +27,7 @@ class PersistenceConfig {
 
     fun dataSource(): HikariDataSource {
         val ds = HikariDataSource()
-        ds.maximumPoolSize = 120
+        ds.maximumPoolSize = 10 // 기존 postgres conf파일에 있는 max_connection보다 적게 잡아줘야 안뻗음
         ds.driverClassName = BuildConfig.DRIVER_CLASS_NAME
         ds.jdbcUrl = BuildConfig.JDBC_URL
         ds.username = BuildConfig.JDBC_USERNAME

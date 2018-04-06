@@ -44,7 +44,7 @@ class PersonRepository {
                 .from(PERSON)
                 .join(USER_ROLES).on(PERSON.EMAIL.eq(USER_ROLES.EMAIL))
                 .where(field(PERSON.EMAIL).eq(email))
-                .fetchOne().into(Person::class.java)
+                .fetchAny().into(Person::class.java)
     }
 
 

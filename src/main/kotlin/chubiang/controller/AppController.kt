@@ -2,7 +2,9 @@ package chubiang.controller
 
 import chubiang.model.Person
 import chubiang.model.ReturnClass
+import chubiang.service.LoginService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpServletResponse
 class AppController {
 
     private val logger = LoggerFactory.getLogger(AppController::class.java)
+
+    @Autowired
+    lateinit var loginService: LoginService
 
     //jsp 페이지
     @RequestMapping(value = ["/"], method = [RequestMethod.GET])
@@ -65,8 +70,8 @@ class AppController {
     }
 
     @RequestMapping(value = ["/signin"], method = [RequestMethod.POST])
-    fun loginProcess(@ModelAttribute person: Person, @RequestParam type: String) {
-//        loginService.loginPage(type,person)
+    fun loginProcess(@ModelAttribute person: Person) {
+        loginService.trySignIn(person)
     }
 
 }
